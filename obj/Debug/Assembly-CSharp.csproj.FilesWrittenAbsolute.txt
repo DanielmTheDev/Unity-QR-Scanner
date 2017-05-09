@@ -21,3 +21,6 @@
 /Users/danielmuckelbauer/Unity/Unity-QR-Scanner/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/danielmuckelbauer/Unity/Unity-QR-Scanner/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/danielmuckelbauer/Unity/Unity-QR-Scanner/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/danielmuckelbauer/Unity/Unity-QR-Scanner/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Users/danielmuckelbauer/Unity/Unity-QR-Scanner/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.dll
+/Users/danielmuckelbauer/Unity/Unity-QR-Scanner/Temp/bin/Debug/UnityEditor.iOS.Extensions.Common.dll

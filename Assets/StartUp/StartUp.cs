@@ -1,57 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using StartUp.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
-using ZXing;
-using System;
-
-public class StartUp : MonoBehaviour
+namespace StartUp
 {
-	private Text ButtonText;
-	public RawImage Image;
-	private WebCamTexture WebcamTexture;
-	Scanner Scanner;
+    public class StartUp : MonoBehaviour
+    {
+        private Text _buttonText;
+        public RawImage Image;
+        private WebCamTexture _webcamTexture;
+        private Scanner _scanner;
 
+        private void Start()
+        {
+            InitializeAndStartCamera();
+            _scanner = gameObject.AddComponent<Scanner>();
+            _buttonText = GameObject.Find("Text").GetComponent<Text>();
+        }
 
-	void Awake ()
-	{
-		Screen.autorotateToPortrait = false;
-		Screen.autorotateToPortraitUpsideDown = false;
-	}
-	// Use this for initialization
-	void Start ()
-	{
-		InitializeAndStartCamera ();
-		Scanner = gameObject.AddComponent<Scanner> ();
-		ButtonText = GameObject.Find ("Text").GetComponent<Text> ();
-	}
+        public void OnClick()
+        {
+            if (!_scanner.Scanning)
+                _scanner.StartScanning(_webcamTexture);
+            else
+                _scanner.StopScanning();
+        }
 
-	public void OnClick ()
-	{
-		if (!Scanner.Scanning)
-			Scanner.decodeImage (WebcamTexture);
-		else
-			Scanner.stopScanning ();
-		setButtonText ();
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		
-	}
-
-	private void InitializeAndStartCamera ()
-	{
-		WebcamTexture = new WebCamTexture ();
-		Image.texture = WebcamTexture;
-		Image.material.mainTexture = WebcamTexture;
-		WebcamTexture.Play ();
-	}
-
-	void setButtonText ()
-	{
-		ButtonText.text = Scanner.Scanning == true ? "Stop" : "Scan";
-	}
+        private void InitializeAndStartCamera()
+        {
+            _webcamTexture = new WebCamTexture();
+            Image.texture = _webcamTexture;
+            Image.material.mainTexture = _webcamTexture;
+            _webcamTexture.Play();
+        }
+    }
 }

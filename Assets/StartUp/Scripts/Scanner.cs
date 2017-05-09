@@ -1,45 +1,69 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 using ZXing;
-
-public class Scanner : MonoBehaviour
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+namespace StartUp.Scripts
 {
-	private BarcodeReader Reader;
-	private Result Result;
-	private WebCamTexture WebcamTexture;
+    public class Scanner : MonoBehaviour
+    {
+        public bool Scanning { get; private set; }
+        private BarcodeReader _reader;
+        private Result _result;
+        private WebCamTexture _webcamTexture;
+        private Text _buttonText;
 
-	public bool Scanning{ get; private set; }
+        private void Start()
+        {
+            _buttonText = GameObject.Find("Text").GetComponent<Text>();
+            _reader = new BarcodeReader();
+            Scanning = false;
+        }
 
-	// Use this for initialization
-	void Start ()
-	{
-		Reader = new BarcodeReader();
-		Scanning = false;
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		if (!Scanning)
-			return;
-		Color32[] Pixels = WebcamTexture.GetPixels32 ();
-		Result = Reader.Decode (Pixels, 400, 400);
-		if (Result != null) {
-			Debug.Log (Result.Text);
-			Scanning = false;
-		} else
-			Debug.Log ("Nichts gefunden");
-	}
+        private void Update()
+        {
+            if (!Scanning)
+                return;
+            CheckForQrCode();
+        }
 
-	public void decodeImage (WebCamTexture webcamTexture)
-	{
-		Scanning = true;
-		WebcamTexture = webcamTexture;
-	}
+        public void StartScanning(WebCamTexture webcamTexture)
+        {
+            Scanning = true;
+            SetButtonText();
+            _webcamTexture = webcamTexture;
+        }
 
-	public void stopScanning ()
-	{
-		Scanning = false;
-	}
+        public void StopScanning()
+        {
+            Scanning = false;
+            SetButtonText();
+        }
+
+        private void CheckForQrCode()
+        {
+            Color32[] pixels = _webcamTexture.GetPixels32();
+            int width = _webcamTexture.width;
+            int height = _webcamTexture.height;
+            _result = _reader.Decode(pixels, width, height);
+
+            if (_result == null)
+                return;
+            StopScanning();
+            DisplaySuccessDialog();
+        }
+
+        private void SetButtonText()
+        {
+            _buttonText.text = Scanning ? "Stop" : "Scan";
+        }
+
+        private void DisplaySuccessDialog()
+        {
+            #if UNITY_EDITOR
+            EditorUtility.DisplayDialog("QR Code found", _result.Text, "Ok", "Cancel");
+            #endif
+        }
+    }
 }
