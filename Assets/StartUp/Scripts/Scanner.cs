@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TheNextFlow.UnityPlugins;
+using UnityEngine;
 using UnityEngine.UI;
 using ZXing;
 #if UNITY_EDITOR
@@ -62,7 +63,13 @@ namespace StartUp.Scripts
         private void DisplaySuccessDialog()
         {
             #if UNITY_EDITOR
-            EditorUtility.DisplayDialog("QR Code found", _result.Text, "Ok", "Cancel");
+            EditorUtility.DisplayDialog("QR Code found" , _result.Text, "Ok", "Cancel");
+            #endif
+
+            #if UNITY_ANDROID
+            MobileNativePopups.OpenAlertDialog(
+                "QR Code found", _result.Text,
+                "Ok", () => { Debug.Log("Ok was pressed"); });
             #endif
         }
     }

@@ -6,7 +6,6 @@ namespace StartUp
 {
     public class StartUp : MonoBehaviour
     {
-        private Text _buttonText;
         public RawImage Image;
         private WebCamTexture _webcamTexture;
         private Scanner _scanner;
@@ -15,7 +14,6 @@ namespace StartUp
         {
             InitializeAndStartCamera();
             _scanner = gameObject.AddComponent<Scanner>();
-            _buttonText = GameObject.Find("Text").GetComponent<Text>();
         }
 
         public void OnClick()
